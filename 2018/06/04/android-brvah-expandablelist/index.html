@@ -84,7 +84,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://hi.csdn.net/attachment/201007/28/0_12803210018q71.gif">
 <meta property="og:image" content="https://claytonhuang.github.io/img/android-adapter-model.jpg">
-<meta property="og:updated_time" content="2018-06-03T16:25:20.219Z">
+<meta property="og:updated_time" content="2018-06-07T01:28:39.904Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="基于BRVAH的Android前端列表式组件开发">
 <meta name="twitter:description" content="前言做了很久的Operations后，终于，终于迎来了一个开发任务!?虽然是一万年没有做过的Android，但是还是满怀期待，至少那个时候的前两分钟我是这样想的…. 然而发现还要重新配置环境？和GFW斗争了许久后，打开项目，却发现之前学的东西都已经忘得差不多了？？ （╯‵□′）╯︵┴─┴">
@@ -401,40 +401,40 @@
 </ul>
 </li>
 </ul>
-<h3 id="导出为apk"><a href="#导出为apk" class="headerlink" title="导出为apk"></a>导出为apk</h3><p>AS中国可以导出的apk有四种: 有/无签名 &amp; debug/release</p>
+<h3 id="导出为apk"><a href="#导出为apk" class="headerlink" title="导出为apk"></a>导出为apk</h3><p>AS中可以导出的apk有四种: 有/无签名 &amp; debug/release</p>
 <table>
 <thead>
 <tr>
 <th style="text-align:center">sign</th>
 <th style="text-align:center">release</th>
-<th>如何生成</th>
+<th style="text-align:center">如何生成</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td style="text-align:center"></td>
 <td style="text-align:center"></td>
-<td>Build-&gt;Build APK(s) 或 GradleProject -&gt; app -&gt; build -&gt; assembleDebug</td>
+<td style="text-align:center">Build-&gt;Build APK(s) 或 GradleProject -&gt; app -&gt; build -&gt; assembleDebug</td>
 </tr>
 <tr>
 <td style="text-align:center"></td>
 <td style="text-align:center">✔️</td>
-<td>GradleProject -&gt; app -&gt; build -&gt; assembleRelease</td>
+<td style="text-align:center">GradleProject -&gt; app -&gt; build -&gt; assembleRelease</td>
 </tr>
 <tr>
 <td style="text-align:center">✔️</td>
 <td style="text-align:center"></td>
-<td>Build-&gt;Generate Signed APK =&gt; Key Build Type = debug</td>
+<td style="text-align:center">Build-&gt;Generate Signed APK =&gt; Key Build Type = debug</td>
 </tr>
 <tr>
 <td style="text-align:center">✔️</td>
 <td style="text-align:center">✔️</td>
-<td>Build-&gt;Generate Signed APK =&gt; Key Build Type = release</td>
+<td style="text-align:center">Build-&gt;Generate Signed APK =&gt; Key Build Type = release</td>
 </tr>
 </tbody>
 </table>
-<p><a href="!https://blog.csdn.net/u013524014/article/details/71537308">AS中可以导出的4中apk</a><br><a href="!https://www.jianshu.com/p/7e5b1bacc35c">AS中如何打包signedAPK</a></p>
-<h2 id="BRVAH"><a href="#BRVAH" class="headerlink" title="BRVAH"></a>BRVAH</h2><h3 id="前言-1"><a href="#前言-1" class="headerlink" title="前言"></a>前言</h3><p>这次的工作中有两个动态渲染的ImageList页面要设计，印象里实现Android中的List组件，特别如果带ImageView是件很麻烦的事，设计好前端item View, 添加Adapter后，还要绑定Listener云云，感觉找一些插件减少工作量是不错的想法。</p>
+<p><a href="!https://blog.csdn.net/u013524014/article/details/71537308">AS中可以导出的4种apk</a><br><a href="!https://www.jianshu.com/p/7e5b1bacc35c">AS中如何打包signedAPK</a></p>
+<h2 id="BRVAH"><a href="#BRVAH" class="headerlink" title="BRVAH"></a><a href="!https://github.com/CymChad/BaseRecyclerViewAdapterHelper">BRVAH</a></h2><h3 id="前言-1"><a href="#前言-1" class="headerlink" title="前言"></a>前言</h3><p>这次的工作中有两个动态渲染的ImageList页面要设计，印象里实现Android中的List组件，特别如果带ImageView是件很麻烦的事，设计好前端item View, 添加Adapter后，还要绑定Listener云云，感觉找一些插件减少工作量是不错的想法。</p>
 <p>BRAVHA就是一个RecyclerAdapter框架，通过将继承实现的Adapter绑定在RecyclerView上，可以完成绝大部分的列表需求。</p>
 <h3 id="RecyclerView"><a href="#RecyclerView" class="headerlink" title="RecyclerView"></a>RecyclerView</h3><p>RecyclerView是谷歌V7包下新增的控件,用来替代ListView的使用,在RecyclerView标准化了ViewHolder类似于ListView中convertView用来做视图缓存。</p>
 <h3 id="配置与调用"><a href="#配置与调用" class="headerlink" title="配置与调用"></a>配置与调用</h3><ul>
@@ -492,6 +492,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/06/07/everday-part1/" rel="prev" title="微信小程序「日更小图文」(上)">
+                微信小程序「日更小图文」(上) <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -568,7 +572,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -579,7 +583,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
