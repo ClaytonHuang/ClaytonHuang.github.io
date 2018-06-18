@@ -64,7 +64,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="nodejs,docker,wxapp," />
 
 
 
@@ -75,19 +75,20 @@
 
 
 
-<meta name="description" content="背景最近接了一个任务，要把在github下合成一个项目的子模块拆开，放到gitlab下，还要让各个子项目，和github的大项目的子模块同步更新（？。？）虽然不太理解这个需求，为啥不静静地在gitlab下开发就好了。 算了。这就是工作吧。     于是我根据大佬的提示，想了几个解决方案。">
+<meta name="description" content="前言按原计划，日更小图文三步走，后端、前端和拓展。">
+<meta name="keywords" content="nodejs,docker,wxapp">
 <meta property="og:type" content="article">
-<meta property="og:title" content="GitLab WebHooks 和 Git SubModule的简单应用">
-<meta property="og:url" content="https://claytonhuang.github.io/2018/05/29/webhooks/index.html">
+<meta property="og:title" content="微信小程序「日更小图文」(下)">
+<meta property="og:url" content="https://claytonhuang.github.io/2018/06/17/everyday-part3/index.html">
 <meta property="og:site_name" content="Clayton的博客">
-<meta property="og:description" content="背景最近接了一个任务，要把在github下合成一个项目的子模块拆开，放到gitlab下，还要让各个子项目，和github的大项目的子模块同步更新（？。？）虽然不太理解这个需求，为啥不静静地在gitlab下开发就好了。 算了。这就是工作吧。     于是我根据大佬的提示，想了几个解决方案。">
+<meta property="og:description" content="前言按原计划，日更小图文三步走，后端、前端和拓展。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://claytonhuang.github.io/img/smiledisapper.jpg">
-<meta property="og:updated_time" content="2018-06-18T13:33:30.497Z">
+<meta property="og:image" content="https://claytonhuang.github.io/img/everyday/everyday-gif.gif">
+<meta property="og:updated_time" content="2018-06-18T13:39:03.946Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="GitLab WebHooks 和 Git SubModule的简单应用">
-<meta name="twitter:description" content="背景最近接了一个任务，要把在github下合成一个项目的子模块拆开，放到gitlab下，还要让各个子项目，和github的大项目的子模块同步更新（？。？）虽然不太理解这个需求，为啥不静静地在gitlab下开发就好了。 算了。这就是工作吧。     于是我根据大佬的提示，想了几个解决方案。">
-<meta name="twitter:image" content="https://claytonhuang.github.io/img/smiledisapper.jpg">
+<meta name="twitter:title" content="微信小程序「日更小图文」(下)">
+<meta name="twitter:description" content="前言按原计划，日更小图文三步走，后端、前端和拓展。">
+<meta name="twitter:image" content="https://claytonhuang.github.io/img/everyday/everyday-gif.gif">
 
 
 
@@ -117,13 +118,13 @@
 
 
 
-  <link rel="canonical" href="https://claytonhuang.github.io/2018/05/29/webhooks/"/>
+  <link rel="canonical" href="https://claytonhuang.github.io/2018/06/17/everyday-part3/"/>
 
 
 
 
 
-  <title>GitLab WebHooks 和 Git SubModule的简单应用 | Clayton的博客</title>
+  <title>微信小程序「日更小图文」(下) | Clayton的博客</title>
   
 
 
@@ -250,7 +251,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://claytonhuang.github.io/2018/05/29/webhooks/">
+    <link itemprop="mainEntityOfPage" href="https://claytonhuang.github.io/2018/06/17/everyday-part3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Clayton Huang">
@@ -267,7 +268,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">GitLab WebHooks 和 Git SubModule的简单应用</h1>
+          <h1 class="post-title" itemprop="name headline">微信小程序「日更小图文」(下)</h1>
         
 
         <div class="post-meta">
@@ -279,8 +280,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-29T21:40:26+08:00">
-                2018-05-29
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-17T21:13:06+08:00">
+                2018-06-17
               </time>
             
 
@@ -302,8 +303,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Operation/" itemprop="url" rel="index">
-                    <span itemprop="name">Operation</span>
+                  <a href="/categories/product/" itemprop="url" rel="index">
+                    <span itemprop="name">product</span>
                   </a>
                 </span>
 
@@ -339,75 +340,103 @@
       
 
       
-        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>最近接了一个任务，要把在github下合成一个项目的子模块拆开，放到gitlab下，还要让各个子项目，和github的大项目的子模块同步更新（？。？）虽然不太理解这个需求，为啥不静静地在gitlab下开发就好了。</p>
-<p>算了。<br>这就是工作吧。    </p>
-<p>于是我根据大佬的提示，想了几个解决方案。</p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>按原计划，日更小图文三步走，后端、前端和拓展。</p>
 <a id="more"></a>
-<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><h3 id="用submodule组合github-repo"><a href="#用submodule组合github-repo" class="headerlink" title="用submodule组合github repo"></a>用submodule组合github repo</h3><blockquote>
-<p>在gihub的大项目repo下，将gitlab的子项目组合成新的repo    </p>
-</blockquote>
-<p>有几个问题<br>不同的submodule，分支不同，commit时会有什么样的结果？ </p>
-<h4 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h4><ol>
-<li><p>在gitlab中创建两个私人repository；</p>
+<h2 id="需求拓展"><a href="#需求拓展" class="headerlink" title="需求拓展"></a>需求拓展</h2><ol>
+<li><p>【图翁的每日推荐已经不再更新】需要先遍历资源中的图文链接，确定好每天爬取的顺序；</p>
 </li>
-<li><p>其中一个放入另一个下，建立submodule；</p>
+<li><p>用docker做服务端的部署；</p>
+</li>
+<li><p>在微信小程序中添加tarBab，提供历史文章的浏览。</p>
 </li>
 </ol>
-<pre><code>git submodule init
-git submodule add git@xxx
-</code></pre><ol start="3">
-<li>在submodule下，branch从master切换到dev/master</li>
+<h2 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h2><h3 id="获取每日链接"><a href="#获取每日链接" class="headerlink" title="获取每日链接"></a>获取每日链接</h3><ol>
+<li><p>爬取life, illustrations, culture, picture分类下的所有图文。</p>
+</li>
+<li><p>通过async-request和cherrio组合，将爬取的链接存入列表。</p>
+</li>
+<li><p>每天取用一个，做基于Redis list做环形数据结构。</p>
+<p> 可以使用RPOPLPUSH key key对同一个列表做回环</p>
+</li>
 </ol>
-<ul>
-<li>发现：在大项目中的子模块，Head指向上传commit的最新id，文件内容保持此commit的状态，可以自由切换分支</li>
-<li>但是每次submodule变更分支提交后，改变了与父repo的分支相关性，而且子模块依赖gitlab才能clone和切换分支。</li>
+<h3 id="docker的简单应用"><a href="#docker的简单应用" class="headerlink" title="docker的简单应用"></a>docker的简单应用</h3><h4 id="使用docker"><a href="#使用docker" class="headerlink" title="使用docker"></a>使用docker</h4><p>docker是目前最主流的容器工具，其口号就是：build once, deploy anywhere。将部署环境container化的设计，可以减少移植、发布的工作量。</p>
+<h4 id="具体步骤"><a href="#具体步骤" class="headerlink" title="具体步骤"></a>具体步骤</h4><ul>
+<li><p>将server打包为images</p>
+<p>  <a href="https://juejin.im/post/5a9626abf265da4e9d225f4f" target="_blank" rel="noopener">参考</a></p>
+<pre><code>$ cd node-docker
+$ docker build -t node-docker-prod .
+$ docker run --rm -it -p 8080:8080 node-docker-prod
+</code></pre></li>
+<li><p>引入redis，在server和redis间建立network</p>
+<p>  server无法找到127.0.0.1:6379下的redis?<br>  <a href="https://stackoverflow.com/questions/41427756/error-redis-connection-to-127-0-0-16379-failed-connect-econnrefused-127-0-0" target="_blank" rel="noopener">参考</a></p>
+<pre><code>docker network create redis
+docker run -d --net &quot;redis&quot; --name redis redis
+docker run -d -p 8100:8100 --net &quot;redis&quot; --name node redis-node
+</code></pre><p>  PS: 在redis连接时，要用 redis-container-name 代替localhost</p>
+</li>
+<li><p>引入docker-compose，将redis和everyday-server放到默认的network下</p>
+</li>
+<li><p>将生成的images push到docker hub</p>
+<p>  之前要通过<code>docker tag</code>修改images name，符合 username/images规范才能push</p>
+</li>
 </ul>
-<h3 id="用webHooks进行submoudle同步"><a href="#用webHooks进行submoudle同步" class="headerlink" title="用webHooks进行submoudle同步"></a>用webHooks进行submoudle同步</h3><blockquote>
-<p>webHooks原理：每次仓库更新后触发对应脚本<br>在repo的settings-&gt;Integrations中设置webhooks，填写 url &amp; secret Token</p>
+<h3 id="微信小程序升级"><a href="#微信小程序升级" class="headerlink" title="微信小程序升级"></a>微信小程序升级</h3><ul>
+<li><p>通过wxParse解析HTML及markdown?</p>
+<p>  <a href="https://github.com/icindy/wxParse" target="_blank" rel="noopener">wxParse</a>，支持将HTML&amp;markdown解析。</p>
+</li>
+<li><p>用Promise封装wx.request方法</p>
+<pre><code>const $get = (url, data) =&gt; {
+return new Promise((resolve, reject) =&gt; {
+    wx.request({
+    url,
+    data,
+    header: { &apos;Content-Type&apos;: &apos;json&apos; },
+    success: resolve,
+    fail: reject
+    })
+  })
+}
+</code></pre></li>
+<li><p>mpvue小程序内的页面跳转传参</p>
+<p>  通过wxmini的自带方法：</p>
+<pre><code>在非tabBar页面跳转，用wx.navigateTo || wx.redirectTo (url)
+在tarBar页面跳转，用wx.switchTab(url)
+</code></pre><p>  通过构造带query的url，再在目标pages的onLoad中解析</p>
+</li>
+<li><p>vue的sub component $emit和父组件的v-on:your_emitname交互</p>
+<p>  实现中遇到的一个小问题，是如何实现在父组件中触发子组件的onClick事件<br>  后来参考<a href="https://cn.vuejs.org/v2/api/#vm-emit" target="_blank" rel="noopener">官方文档</a>的emit事件回调解决了</p>
+<ul>
+<li><p>方案</p>
+<p>  子组件中，绑定@click=”eventFunction”<br>  在methods中添加eventFunction，同时通过this.$emit(‘eventName’, {args})传递事件名和参数。</p>
+<p>  父组件中，调用v-on:eventName=”eventFunction”<br>  然后在methods中实现eventFunction即可触发子组件中的响应。</p>
+<blockquote>
+<p>通过这个方案，也可以在父子组件中实现数据交互。</p>
 </blockquote>
-<p>计划<br>每次更新子repo时，可以带动gihub repo的子模块更新，然后上传父repo。</p>
-<h4 id="操作步骤"><a href="#操作步骤" class="headerlink" title="操作步骤"></a>操作步骤</h4><ol>
-<li><p>登录gitlab所在的服务器</p>
 </li>
-<li><p>配置nginx + php + spawn-fcgi</p>
+</ul>
 </li>
-</ol>
-<p><strong>[参考]</strong><br><a href="!https://www.jianshu.com/p/5b0a82b51195">ubuntu下php+nginx的安装</a><br><a href="!http://blog.51cto.com/hequan/1768378">nginx的初始nginx.conf配置</a><br><a href="!https://www.cnblogs.com/languoliang/archive/2013/04/01/nginx.html">Nginx+FastCGI模式配置</a><br><a href="!http://blog.51cto.com/fighter/1670667">webhooks自动化发布配置</a></p>
-<h3 id="最后的解决方案"><a href="#最后的解决方案" class="headerlink" title="最后的解决方案"></a>最后的解决方案</h3><h4 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h4><ol>
-<li><p>在gitlab下新建了一个repo <strong>sync</strong>;    </p>
-</li>
-<li><p>其中将gitlab每次变更的代码copy到该repo下，<strong>sync</strong>是父仓库，其他repo作为子文件夹;</p>
-</li>
-<li><p>子repo的分支，和父repo的分支对应，当只同步dev/master和master分支下的文件。</p>
-</li>
-<li><p>最后，通过nodejs 调用child-process执行一个脚本。</p>
-<div align="center"><br><img src="/img/smiledisapper.jpg"><br></div>
-
-</li>
-</ol>
-<p>愉快地完成了，只是出现了不少粗心产生的bug。</p>
-<p>感觉可能将要在devOps的路上越走越远 ？.？</p>
+</ul>
+<h2 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h2><p><img src="/img/everyday/everyday-gif.gif" alt="result"></p>
+<p><a href="https://github.com/ClaytonHuang/everyday" target="_blank" rel="noopener">Github Repo</a></p>
+<blockquote>
+<p>然鹅，这些个文章的质量好像并不咋地…加上基本没有的设计，很好，又诞生了一个完美的小辣鸡ヽ(ﾟ∀ﾟ)ﾒ(ﾟ∀ﾟ)ﾉ</p>
+</blockquote>
+<p>域名还要备案才能调用接口<em>(:з」∠)</em>，上线遥遥无期</p>
+<p>还是回去继续看世界杯吧(／_＼)</p>
 <h2 id="Q-amp-A"><a href="#Q-amp-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</h2><ul>
-<li><p>spawn-fcgi: child exited with: 127   </p>
-<p>  查看php-cgi是否安装成功，并执行<br>  spawn-fcgi -a 127.0.0.1 -p 9000 -C 10 -u [user] -f [location_php_cgi] </p>
+<li><p>jquery如何遍历dom list?</p>
+<p>  通过each获取index和element<br>  也可直接用$(this)指代该element</p>
 </li>
-<li><p>apt-get install nginx nginx.conf配置有误    </p>
-<p>  参照网上重置 nginx.conf文件，<br>  重启服务生效</p>
-<blockquote>
-<p>sudo /etc/init.d/nginx restart</p>
-</blockquote>
+<li><p>mpvue 添加图片资源</p>
+<ul>
+<li>在static中添加images资源即可</li>
+<li>完美解决方案是修改webpack</li>
+</ul>
 </li>
-<li><p>80 端口被占用    </p>
-<p>  修改改server listen到其他端口（这里是8055) </p>
-<blockquote>
-<p>还要注意 nginx用户与用户组、spawn-fcgi的user设置, 因为其实是php exec的权限来源</p>
-</blockquote>
-</li>
-<li><p>嵌套git仓库的问题</p>
-<p>  如果主repo下有文件夹内还有.git，则其会在github中被识别为submodule，文件内容不会上传，也无法访问<br>  解决方法：</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 删除子文件夹中的.git文件</span><br><span class="line">rm -rf .git</span><br><span class="line"># 清除主仓库的cached</span><br><span class="line">git rm --cached repo</span><br></pre></td></tr></table></figure>
-<p>  此时通过<code>git status</code>就可以看到子文件夹的内容被加入到了父repo</p>
-</li>
+<li><p>cheerio.load(html)常会出现乱码？</p>
+<p>  <a href="https://cnodejs.org/topic/530c733fb0a9fa8b7d00c7f9" target="_blank" rel="noopener">参考</a></p>
+<pre><code>var $ = cheerio.load(htmlStr, {decodeEntities: false});
+</code></pre></li>
 </ul>
 
       
@@ -424,6 +453,16 @@ git submodule add git@xxx
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/nodejs/" rel="tag"># nodejs</a>
+          
+            <a href="/tags/docker/" rel="tag"># docker</a>
+          
+            <a href="/tags/wxapp/" rel="tag"># wxapp</a>
+          
+        </div>
+      
 
       
       
@@ -433,8 +472,8 @@ git submodule add git@xxx
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/05/24/hello-world/" rel="next" title="Hello World">
-                <i class="fa fa-chevron-left"></i> Hello World
+              <a href="/2018/06/13/code-push-server-docker/" rel="next" title="用docker部署code-push-server">
+                <i class="fa fa-chevron-left"></i> 用docker部署code-push-server
               </a>
             
           </div>
@@ -442,10 +481,6 @@ git submodule add git@xxx
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/05/30/tencent-server-deploy/" rel="prev" title="『腾讯云配置的心路历程』">
-                『腾讯云配置的心路历程』 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -577,7 +612,7 @@ git submodule add git@xxx
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决方案"><span class="nav-number">2.</span> <span class="nav-text">解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用submodule组合github-repo"><span class="nav-number">2.1.</span> <span class="nav-text">用submodule组合github repo</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#验证"><span class="nav-number">2.1.1.</span> <span class="nav-text">验证</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用webHooks进行submoudle同步"><span class="nav-number">2.2.</span> <span class="nav-text">用webHooks进行submoudle同步</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#操作步骤"><span class="nav-number">2.2.1.</span> <span class="nav-text">操作步骤</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最后的解决方案"><span class="nav-number">2.3.</span> <span class="nav-text">最后的解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#步骤"><span class="nav-number">2.3.1.</span> <span class="nav-text">步骤</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Q-amp-A"><span class="nav-number">3.</span> <span class="nav-text">Q&amp;A</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#需求拓展"><span class="nav-number">2.</span> <span class="nav-text">需求拓展</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#具体实现"><span class="nav-number">3.</span> <span class="nav-text">具体实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#获取每日链接"><span class="nav-number">3.1.</span> <span class="nav-text">获取每日链接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker的简单应用"><span class="nav-number">3.2.</span> <span class="nav-text">docker的简单应用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用docker"><span class="nav-number">3.2.1.</span> <span class="nav-text">使用docker</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#具体步骤"><span class="nav-number">3.2.2.</span> <span class="nav-text">具体步骤</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#微信小程序升级"><span class="nav-number">3.3.</span> <span class="nav-text">微信小程序升级</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结果"><span class="nav-number">4.</span> <span class="nav-text">结果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Q-amp-A"><span class="nav-number">5.</span> <span class="nav-text">Q&amp;A</span></a></li></ol></div>
             
 
           </div>
