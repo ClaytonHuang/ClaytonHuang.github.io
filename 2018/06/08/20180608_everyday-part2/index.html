@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言后端调好后，终于可以开始前端的工作了，一脸轻松(ᇂ_| 然而一个巨大的危机正在悄然逼近…">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微信小程序「日更小图文」(中)">
+<meta property="og:url" content="https://claytonhuang.github.io/2018/06/08/20180608_everyday-part2/index.html">
+<meta property="og:site_name" content="Clayton的新天际">
+<meta property="og:description" content="前言后端调好后，终于可以开始前端的工作了，一脸轻松(ᇂ_| 然而一个巨大的危机正在悄然逼近…">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://cn.vuejs.org/images/lifecycle.png">
+<meta property="og:updated_time" content="2018-11-30T03:18:33.742Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="微信小程序「日更小图文」(中)">
+<meta name="twitter:description" content="前言后端调好后，终于可以开始前端的工作了，一脸轻松(ᇂ_| 然而一个巨大的危机正在悄然逼近…">
+<meta name="twitter:image" content="https://cn.vuejs.org/images/lifecycle.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://claytonhuang.github.io/2018/06/08/20180608_everyday-part2/">
+
+
+
+
+
+  <title>微信小程序「日更小图文」(中) | Clayton的新天际</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Clayton的新天际</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://claytonhuang.github.io/2018/06/08/20180608_everyday-part2/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Clayton Huang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Clayton的新天际">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">微信小程序「日更小图文」(中)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-08T23:12:03+08:00">
+                2018-06-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/product/" itemprop="url" rel="index">
+                    <span itemprop="name">product</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/product/wxapp/" itemprop="url" rel="index">
+                    <span itemprop="name">wxapp</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>后端调好后，终于可以开始前端的工作了，一脸轻松(ᇂ_|</p>
+<p>然而一个巨大的危机正在悄然逼近…</p>
+<a id="more"></a>
+<p>好吧其实也没有什么危机。</p>
+<p>就是找到几个钩子，然后设计一下就完了。美工不存在的，请放心。</p>
+<h2 id="工作准备"><a href="#工作准备" class="headerlink" title="工作准备"></a>工作准备</h2><h3 id="Vue-webpack配置"><a href="#Vue-webpack配置" class="headerlink" title="Vue+webpack配置"></a>Vue+webpack配置</h3><ul>
+<li><p>第一次就想造轮子?<br><a href="https://github.com/varHarrie/varharrie.github.io/issues/7" target="_blank" rel="noopener">参考</a><br>结论：用的webpack版本太老，有各种报错，其他地方还有各种抄袭？</p>
+</li>
+<li><p>发现Vue-cli很方便<br><a href="http://www.cnblogs.com/keepfool/p/5678427.html" target="_blank" rel="noopener">直接用Vue调用webpack模板生成</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vue init webpack my-webpack-demo</span><br><span class="line">vue init webpack-simple my-webpack-demo</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="Vue-js基础"><a href="#Vue-js基础" class="headerlink" title="Vue.js基础"></a>Vue.js基础</h3><p>Vue的优势：不用管DOM操作，所有的代码只需要关注逻辑层；组件化应用构建。</p>
+<h4 id="基本内容"><a href="#基本内容" class="headerlink" title="基本内容"></a>基本内容</h4><ul>
+<li><p>指令： v-xxxx，以表示它们是Vue提供的特殊特性<br>  v-on:click 变量层: methods</p>
+</li>
+<li><p>条件与循环： </p>
+<p>  v-if=’variable’<br>  v-for=’var in vars’</p>
+</li>
+<li><p>表单与应用状态之间的双向绑定</p>
+<p>  v-model=’message’</p>
+</li>
+<li><p>组件构建</p>
+<pre><code>Vue.component(&apos;todo-item&apos;, {
+props: [&apos;todo&apos;],
+    template: &apos;&lt;li&gt;{{ todo.text }}&lt;/li&gt;&apos;
+})
+</code></pre></li>
+</ul>
+<h4 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h4><p><img src="https://cn.vuejs.org/images/lifecycle.png" alt="Vue生命周期"></p>
+<h4 id="风格指南"><a href="#风格指南" class="headerlink" title="风格指南"></a>风格指南</h4><p>基本原则：<br>JS中常用camelCase<br>HTML中常用kebab-case</p>
+<ol>
+<li>Vue组件名必须为多个单词</li>
+<li>组件的data必须为一个函数</li>
+<li><p>props定义尽可能详细</p>
+<pre><code>props: {
+    status: String
+}
+</code></pre></li>
+<li><p>为v-for设置键值key</p>
+</li>
+<li>为组件样式设置作用域</li>
+</ol>
+<p>还有很多，<a href="https://cn.vuejs.org/v2/guide/" target="_blank" rel="noopener">参考文档</a></p>
+<hr>
+<h2 id="正式开发"><a href="#正式开发" class="headerlink" title="正式开发"></a>正式开发</h2><h3 id="前端"><a href="#前端" class="headerlink" title="前端"></a>前端</h3><p>wxapp </p>
+<h4 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h4><p>mpvue</p>
+<h4 id="前期"><a href="#前期" class="headerlink" title="前期"></a>前期</h4><blockquote>
+<p>单页面小程序</p>
+</blockquote>
+<p>由于个人开发号不能嵌入web-view，因此之前将爬取的图片转为img，直接用img放入首页（？？会不会太简单）</p>
+<p>后期再完成Navigation和历史记录功能吧。</p>
+<blockquote>
+<p>适配问题</p>
+</blockquote>
+<p>img组件要适配移动端，可能需要进行一定的缩放，高度不定，因此根据移动端宽度100%/图片原尺寸确定缩放比例</p>
+<ul>
+<li><p>需要：预先知晓图片的尺寸</p>
+<p>  在后端引入redis，保存：今日图片链接/历史图片链接hashmap{url: width&amp;height}，直接从中取宽高</p>
+</li>
+</ul>
+<h2 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>Redis 是一个开源的key-value存储系统，通常被称为数据结构服务器，因为存于其中的值可以是String, Map, list, sets和sorted sets等等。</p>
+<h3 id="Ubuntu下配置Redis"><a href="#Ubuntu下配置Redis" class="headerlink" title="Ubuntu下配置Redis"></a>Ubuntu下配置Redis</h3><p>推荐直接apt-get安装redis-server，<a href="https://blog.csdn.net/u014520797/article/details/54577195" target="_blank" rel="noopener">参考</a></p>
+<h3 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h3><p>目前暂时会用到的两个数据结构，就是Key-String和Key-Hashmap的读写</p>
+<p>通过node连接操作redis，有很多库，如node-redis, ioredis，考虑到异(neng)步(li)问题，项目里用了async-redis.</p>
+<ul>
+<li><p>Key-String</p>
+<p>  通过set, get操作即可</p>
+<pre><code>set key value
+get key
+</code></pre></li>
+<li><p>Key-Hashmap</p>
+<p>  redis hash 其实是string类型的field和value的映射表，这里是用来存放历史图文和对应的图像尺寸等信息，由于后期文章数量可能会比较多，因此想用hashmap提高效率。</p>
+<blockquote>
+<p>后来才发现多是不可能多的，这几个月是不可能多的。反正又上不了线，就是只能本地调试，才能跑一跑这样子。</p>
+</blockquote>
+<p>  存放数据</p>
+<pre><code>hmset key field1 value1 field2 value2
+</code></pre><p>  还有其他几种写法，但关键，是将field和value对应起来，然后绑定到key下</p>
+<p>  显示hashmap中所有数据</p>
+<pre><code>hgetall key
+</code></pre><p>  删除某个字段</p>
+<pre><code>hdel key
+</code></pre><p>  …<br>  <a href="https://redis.io/commands" target="_blank" rel="noopener">想了解更多？</a></p>
+</li>
+</ul>
+<h3 id="新接口"><a href="#新接口" class="headerlink" title="新接口"></a>新接口</h3><ul>
+<li>Response.body</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    "result": true, // false</span><br><span class="line">    "url": "xxxxx.xxx",  // （图片或网页链接）可以用于直接渲染</span><br><span class="line">    "shape": &#123;</span><br><span class="line">        "width": 515,</span><br><span class="line">        "height": 4477</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Q-amp-A"><a href="#Q-amp-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</h2><ul>
+<li><p>Which one do you like to install (webpack-cli/webpack-command)<br>A： webpack-cli没有安装成功</p>
+</li>
+<li><p>data () { return {}} 和直接 data: {}?</p>
+</li>
+<li><p>wx.request后如何修改data中参数的值</p>
+<p>  在request前引入var that = this<br>  后用that.dataname = xxx修改</p>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/07/20180607_everyday-part1/" rel="next" title="微信小程序「日更小图文」(上)">
+                <i class="fa fa-chevron-left"></i> 微信小程序「日更小图文」(上)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/06/13/20180613_code-push-server-docker/" rel="prev" title="用docker部署code-push-server">
+                用docker部署code-push-server <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Clayton Huang</p>
+              <p class="site-description motion-element" itemprop="description">Done is better than perfect.</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#工作准备"><span class="nav-number">2.</span> <span class="nav-text">工作准备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Vue-webpack配置"><span class="nav-number">2.1.</span> <span class="nav-text">Vue+webpack配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Vue-js基础"><span class="nav-number">2.2.</span> <span class="nav-text">Vue.js基础</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基本内容"><span class="nav-number">2.2.1.</span> <span class="nav-text">基本内容</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#生命周期"><span class="nav-number">2.2.2.</span> <span class="nav-text">生命周期</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#风格指南"><span class="nav-number">2.2.3.</span> <span class="nav-text">风格指南</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正式开发"><span class="nav-number">3.</span> <span class="nav-text">正式开发</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#前端"><span class="nav-number">3.1.</span> <span class="nav-text">前端</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#工具"><span class="nav-number">3.1.1.</span> <span class="nav-text">工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#前期"><span class="nav-number">3.1.2.</span> <span class="nav-text">前期</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis"><span class="nav-number">4.</span> <span class="nav-text">Redis</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#简介"><span class="nav-number">4.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ubuntu下配置Redis"><span class="nav-number">4.2.</span> <span class="nav-text">Ubuntu下配置Redis</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用"><span class="nav-number">4.3.</span> <span class="nav-text">应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#新接口"><span class="nav-number">4.4.</span> <span class="nav-text">新接口</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Q-amp-A"><span class="nav-number">5.</span> <span class="nav-text">Q&amp;A</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Clayton Huang</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

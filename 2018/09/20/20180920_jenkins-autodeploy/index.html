@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言实验室经常用SpringBoot+Maven+Tomcat在win server???上部署我们的服务。 但每次更新完程序后，需要手动build，生成war包，然后remote连接，再丢到Tomcat的webapp下，中间还要关闭、启动Tomcat服务，繁琐。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="通过 Jekins+gitlab+tomcat 自动化部署">
+<meta property="og:url" content="https://claytonhuang.github.io/2018/09/20/20180920_jenkins-autodeploy/index.html">
+<meta property="og:site_name" content="Clayton的新天际">
+<meta property="og:description" content="前言实验室经常用SpringBoot+Maven+Tomcat在win server???上部署我们的服务。 但每次更新完程序后，需要手动build，生成war包，然后remote连接，再丢到Tomcat的webapp下，中间还要关闭、启动Tomcat服务，繁琐。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1000017/2ku4adscv1.jpeg">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/1094291/201712/1094291-20171205152643175-1095749929.png">
+<meta property="og:updated_time" content="2019-03-05T15:19:53.646Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="通过 Jekins+gitlab+tomcat 自动化部署">
+<meta name="twitter:description" content="前言实验室经常用SpringBoot+Maven+Tomcat在win server???上部署我们的服务。 但每次更新完程序后，需要手动build，生成war包，然后remote连接，再丢到Tomcat的webapp下，中间还要关闭、启动Tomcat服务，繁琐。">
+<meta name="twitter:image" content="https://ask.qcloudimg.com/http-save/yehe-1000017/2ku4adscv1.jpeg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://claytonhuang.github.io/2018/09/20/20180920_jenkins-autodeploy/">
+
+
+
+
+
+  <title>通过 Jekins+gitlab+tomcat 自动化部署 | Clayton的新天际</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Clayton的新天际</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://claytonhuang.github.io/2018/09/20/20180920_jenkins-autodeploy/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Clayton Huang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Clayton的新天际">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">通过 Jekins+gitlab+tomcat 自动化部署</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-20T01:12:03+08:00">
+                2018-09-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Operation/" itemprop="url" rel="index">
+                    <span itemprop="name">Operation</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>实验室经常用SpringBoot+Maven+Tomcat在win server???上部署我们的服务。</p>
+<p>但每次更新完程序后，需要手动build，生成war包，然后remote连接，再丢到Tomcat的webapp下，中间还要关闭、启动Tomcat服务，繁琐。</p>
+<a id="more"></a>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1000017/2ku4adscv1.jpeg" alt="一把梭"></p>
+<p>最近小程序接口的开发让人崩溃。作为兼职Ops，还是搞个自动化部署吧。</p>
+<h3 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h3><p>简单地用Jetkins + Maven + Tomcat，配合Gitlab的CI来搞事情。</p>
+<p>但是在Windows下，注定没有平凡的组合/手动微笑</p>
+<h3 id="Jenkins-amp-Maven-amp-Git的安装"><a href="#Jenkins-amp-Maven-amp-Git的安装" class="headerlink" title="Jenkins&amp;Maven&amp;Git的安装"></a>Jenkins&amp;Maven&amp;Git的安装</h3><p>参考 <a href="https://www.jianshu.com/p/bc13320df170" target="_blank" rel="noopener">Xavier_Wei Jenkins+ GIT + Tomcat 自动化部署</a></p>
+<h3 id="Jenkins的系统配置"><a href="#Jenkins的系统配置" class="headerlink" title="Jenkins的系统配置"></a>Jenkins的系统配置</h3><p>在左侧导航栏，选择”系统管理“一栏。</p>
+<h4 id="Step1-全局工具配置"><a href="#Step1-全局工具配置" class="headerlink" title="Step1: 全局工具配置"></a>Step1: 全局工具配置</h4><p>Maven/JDK/Git尽量都通过绝对路径找到本地，通过Jenkins自带的管理可能有问题。</p>
+<ul>
+<li>Maven<br>xxx\apache-maven-3.6.0\conf\settings.xml</li>
+<li>JDK<br>xxxx\java\jdk1.8.0_51</li>
+<li>Git<br>xxxxx\Git\cmd\git.exe</li>
+</ul>
+<h3 id="Step2-系统设置"><a href="#Step2-系统设置" class="headerlink" title="Step2: 系统设置"></a>Step2: 系统设置</h3><p>主要是两个设置</p>
+<ul>
+<li>Jenkins Location</li>
+</ul>
+<p>Jenkins URL &amp; 管理员邮箱System Admin e-mail address</p>
+<ul>
+<li>E-mail Notification</li>
+</ul>
+<p>注意邮箱要开通SMTP功能</p>
+<h3 id="Step2-插件管理"><a href="#Step2-插件管理" class="headerlink" title="Step2: 插件管理"></a>Step2: 插件管理</h3><p>安装</p>
+<ul>
+<li>Maven Integration plugin</li>
+<li>Deploy to container Plugin</li>
+</ul>
+<p><strong>ps</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">POP3 </span><br><span class="line">SMTP 默认端口 25, 开启SSL 下为465</span><br><span class="line">IMAP</span><br></pre></td></tr></table></figure>
+<h3 id="git-Credentials"><a href="#git-Credentials" class="headerlink" title="git Credentials"></a>git Credentials</h3><p>新建一个项目后，添加Git仓库关联。<br>绑定repo path之后，添加一个凭证（凭证可以在首页左侧中统一管理）。</p>
+<p>采用的方法：<br>能连接到目标gitlab或github的<br>Username and Password</p>
+<h3 id="在项目中指定到系统的Tomcat"><a href="#在项目中指定到系统的Tomcat" class="headerlink" title="在项目中指定到系统的Tomcat"></a>在项目中指定到系统的Tomcat</h3><ul>
+<li><p>设置Tomcat Url<br>为<a href="http://localhost:{your_tomcat_port}" target="_blank" rel="noopener">http://localhost:{your_tomcat_port}</a></p>
+</li>
+<li><p>设置Tomcat的用户角色</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;user</span><br><span class="line">  username=&quot;tomcat&quot;</span><br><span class="line">  password=&quot;xxx&quot;</span><br><span class="line">  roles=&quot;manager-script&quot;</span><br><span class="line">/&gt;</span><br><span class="line"></span><br><span class="line">&lt;user</span><br><span class="line">  username=&quot;admin&quot;</span><br><span class="line">  password=&quot;admin&quot;</span><br><span class="line">  roles=&quot;manager-gui&quot;</span><br><span class="line">/&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="gitlab-push-触发jenkins打包"><a href="#gitlab-push-触发jenkins打包" class="headerlink" title="gitlab push 触发jenkins打包"></a>gitlab push 触发jenkins打包</h3><p>安装Gitlab plugin &amp; Gitlab Hook后，在项目配置的Build Triggers下，就可以看到Build when a change is pushed to GitLab的选项。<br><img src="https://images2017.cnblogs.com/blog/1094291/201712/1094291-20171205152643175-1095749929.png" alt="选择"></p>
+<h2 id="Q-amp-A"><a href="#Q-amp-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</h2><h3 id="maven编译提示找不到依赖？"><a href="#maven编译提示找不到依赖？" class="headerlink" title="maven编译提示找不到依赖？"></a>maven编译提示找不到依赖？</h3><p>指定maven依赖位置</p>
+<p>编译时报错，找不到sqljdbc4.jar，在系统中手动用mvn导入也不行</p>
+<p>在项目的config下，找到 Build-&gt;Goals and options<br>clean package -Dmaven.repo.local=C:\Users\fyang.m2\repository</p>
+<h3 id="接收邮件的问题"><a href="#接收邮件的问题" class="headerlink" title="接收邮件的问题"></a>接收邮件的问题</h3><p>ERROR: Could not connect to SMTP host: localhost, port: 25</p>
+<p>163或者QQ邮箱的SMTP需要用SSL连接，此时port为465，25端口可能已经失效。</p>
+<ul>
+<li>535错误<br>用户名或密码不正确；<br>没有开通SMTP，但我的163邮箱一直不行？最后用QQ邮箱成功了；</li>
+</ul>
+<h3 id="Tomcat-Unable-to-delete-war的问题"><a href="#Tomcat-Unable-to-delete-war的问题" class="headerlink" title="Tomcat Unable to delete war的问题"></a>Tomcat Unable to delete war的问题</h3><ul>
+<li><p>Tomcat需要设置为热部署状态<br><a href="https://blog.csdn.net/fly91" target="_blank" rel="noopener">https://blog.csdn.net/fly91</a><br>0905/article/details/80262658</p>
+</li>
+<li><p>在Context后面添加元素</p>
+<context antiresourcelocking="true" antijarlocking="true"> 
+
+</context></li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://www.jianshu.com/p/bc13320df170" target="_blank" rel="noopener">Xavier_Wei Jenkins+ GIT + Tomcat 自动化部署</a><br><a href="https://my.oschina.net/sssmile/blog/895503" target="_blank" rel="noopener">sssmile的Jenkins配置经验</a><br><a href="https://blog.csdn.net/qq_28719059/article/details/79073709" target="_blank" rel="noopener">Jenkins Maven找不到某些依赖？</a><br><a href="https://stackoverflow.com/questions/41675813/the-username-you-provided-is-not-allowed-to-use-the-text-based-tomcat-manager-e" target="_blank" rel="noopener">解决Tomcat URL用户配置问题</a><br><a href="https://www.cnblogs.com/bugsbunny/p/7919993.html" target="_blank" rel="noopener">gitLab配合Jenkins</a><br><a href="https://blog.csdn.net/longzhiwuing/article/details/78915829" target="_blank" rel="noopener">gitlab-hook插件单独安装没有作用？</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/15/20180815-vscode-standard-style/" rel="next" title="Visual Studio Code代码标准Style配置">
+                <i class="fa fa-chevron-left"></i> Visual Studio Code代码标准Style配置
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Clayton Huang</p>
+              <p class="site-description motion-element" itemprop="description">Done is better than perfect.</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#说明"><span class="nav-number">1.1.</span> <span class="nav-text">说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Jenkins-amp-Maven-amp-Git的安装"><span class="nav-number">1.2.</span> <span class="nav-text">Jenkins&amp;Maven&amp;Git的安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Jenkins的系统配置"><span class="nav-number">1.3.</span> <span class="nav-text">Jenkins的系统配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Step1-全局工具配置"><span class="nav-number">1.3.1.</span> <span class="nav-text">Step1: 全局工具配置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Step2-系统设置"><span class="nav-number">1.4.</span> <span class="nav-text">Step2: 系统设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Step2-插件管理"><span class="nav-number">1.5.</span> <span class="nav-text">Step2: 插件管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-Credentials"><span class="nav-number">1.6.</span> <span class="nav-text">git Credentials</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在项目中指定到系统的Tomcat"><span class="nav-number">1.7.</span> <span class="nav-text">在项目中指定到系统的Tomcat</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gitlab-push-触发jenkins打包"><span class="nav-number">1.8.</span> <span class="nav-text">gitlab push 触发jenkins打包</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Q-amp-A"><span class="nav-number">2.</span> <span class="nav-text">Q&amp;A</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#maven编译提示找不到依赖？"><span class="nav-number">2.1.</span> <span class="nav-text">maven编译提示找不到依赖？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#接收邮件的问题"><span class="nav-number">2.2.</span> <span class="nav-text">接收邮件的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tomcat-Unable-to-delete-war的问题"><span class="nav-number">2.3.</span> <span class="nav-text">Tomcat Unable to delete war的问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Clayton Huang</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
