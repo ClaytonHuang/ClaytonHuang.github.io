@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言用问卷星因为要打开另一个链接，用户的体验不好，所以问卷还是整合到了应用里。 现在项目进行了一个阶段，需要给用户发送调查问卷，同时查看他们的答卷，但是只能人肉看。 所以自己搭建一个问卷管理平台吧。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="umi搭建问卷Web平台">
+<meta property="og:url" content="https://claytonhuang.github.io/2018/10/12/20181012_umi_learn/index.html">
+<meta property="og:site_name" content="Clayton的新天际">
+<meta property="og:description" content="前言用问卷星因为要打开另一个链接，用户的体验不好，所以问卷还是整合到了应用里。 现在项目进行了一个阶段，需要给用户发送调查问卷，同时查看他们的答卷，但是只能人肉看。 所以自己搭建一个问卷管理平台吧。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-08-15T12:29:32.823Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="umi搭建问卷Web平台">
+<meta name="twitter:description" content="前言用问卷星因为要打开另一个链接，用户的体验不好，所以问卷还是整合到了应用里。 现在项目进行了一个阶段，需要给用户发送调查问卷，同时查看他们的答卷，但是只能人肉看。 所以自己搭建一个问卷管理平台吧。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://claytonhuang.github.io/2018/10/12/20181012_umi_learn/">
+
+
+
+
+
+  <title>umi搭建问卷Web平台 | Clayton的新天际</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Clayton的新天际</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://claytonhuang.github.io/2018/10/12/20181012_umi_learn/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Clayton Huang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Clayton的新天际">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">umi搭建问卷Web平台</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-12T21:20:33+08:00">
+                2018-10-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web/" itemprop="url" rel="index">
+                    <span itemprop="name">Web</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web/Frontend/" itemprop="url" rel="index">
+                    <span itemprop="name">Frontend</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>用问卷星因为要打开另一个链接，用户的体验不好，所以问卷还是整合到了应用里。</p>
+<p>现在项目进行了一个阶段，需要给用户发送调查问卷，同时查看他们的答卷，但是只能人肉看。</p>
+<p>所以自己搭建一个问卷管理平台吧。</p>
+<a id="more"></a>
+<h2 id="技术栈"><a href="#技术栈" class="headerlink" title="技术栈"></a>技术栈</h2><ul>
+<li>umi（蚂蚁金服实践，react+antd+redux）</li>
+<li>axios网络请求</li>
+</ul>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>笔记将从umi的由来与优点、Dva的架构与应用、以及一个简单的Demo三个方面进行说明。</p>
+<h2 id="Why-umi"><a href="#Why-umi" class="headerlink" title="Why umi?"></a>Why umi?</h2><blockquote>
+<p>为什么选择umi?</p>
+</blockquote>
+<h3 id="What’s-umi？"><a href="#What’s-umi？" class="headerlink" title="What’s umi？"></a>What’s umi？</h3><p>umi是前端商业工程化开发后沉淀的开发框架，简化了React框架开发的编译、部署操作，同时融合了Antd，但更大程度上优化了路由配置和项目结构管理。</p>
+<p>在实际使用后，发现umi确实可以提高一般的单页面前端项目开发效率，把工作的重心放到产品业务的研发中。</p>
+<h3 id="The-Advantages-of-umi"><a href="#The-Advantages-of-umi" class="headerlink" title="The Advantages of umi ?"></a>The Advantages of umi ?</h3><h3 id="I-Component"><a href="#I-Component" class="headerlink" title="I. Component"></a>I. Component</h3><p>React的精髓除了MVVM的设计思想，还有就是Component+JSX的开发方法。而Component作为React的基本组成部分，在一定程度上实现了开发中数据的相对独立与隔离。</p>
+<p>在React的基础上，umi将React Component的概念引申为页面，并通过Route进行级联绑定，约定放在根目录的src/page/文件夹下。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 简单的umi PageComponent返回JSX对象用于渲染</span></span><br><span class="line"><span class="comment">// src/page/HelloPage.js</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> () =&gt; &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">        &lt;div&gt;页面组件Hello Page&lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">    )</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br></pre></td></tr></table></figure>
+<h3 id="II-Router"><a href="#II-Router" class="headerlink" title="II. Router"></a>II. Router</h3><p>umi中的Route其实可以看做React-Route的一种约定化封装。</p>
+<p>相当于React-Route中的Route组件，用根目录config/config.js中的route: { path, component } 设计代替，根据path变化，向Layout props.children中传入设置中的component显示。</p>
+<p><strong>基本的config.js结构</strong><br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">    routes: [</span><br><span class="line">        &#123;</span><br><span class="line">            path: <span class="string">'/'</span>,</span><br><span class="line">            component: <span class="string">'HelloPage'</span> <span class="comment">//这里是上面的组件</span></span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="III-Using-AntD"><a href="#III-Using-AntD" class="headerlink" title="III. Using AntD"></a>III. Using AntD</h3><blockquote>
+<p>About Layout</p>
+</blockquote>
+<p>AntD也是蚂蚁金服商业级网页前端视觉设计的沉淀产物，提供了通用的布局、配色、组件模板，让开发者能快速搭建一个单页面应用。</p>
+<p>umi中集成了antD，在@alipay/umi/antd中.</p>
+<h3 id="VI-umi-dev-amp-build"><a href="#VI-umi-dev-amp-build" class="headerlink" title="VI. umi dev&amp;build?"></a>VI. umi dev&amp;build?</h3><p>相对于一般的react-app的webpack打包启动，umi提供了一个简单脚本umi dev(or build)，通过npm run时引入/node_modules/.bin下的umi脚本，对项目进行编译。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">// umi.sh脚本</span><br><span class="line">#!/bin/sh</span><br><span class="line">basedir=$(dirname &quot;$(echo &quot;$0&quot; | sed -e &apos;s,\\,/,g&apos;)&quot;)</span><br><span class="line"></span><br><span class="line">case `uname` in</span><br><span class="line">    *CYGWIN*) basedir=`cygpath -w &quot;$basedir&quot;`;;</span><br><span class="line">esac</span><br><span class="line"></span><br><span class="line">if [ -x &quot;$basedir/node&quot; ]; then</span><br><span class="line">  &quot;$basedir/node&quot;  &quot;$basedir/../_@alipay_umi@2.14.2@@alipay/umi/bin/umi.js&quot; &quot;$@&quot;</span><br><span class="line">  ret=$?</span><br><span class="line">else</span><br><span class="line">  node  &quot;$basedir/../_@alipay_umi@2.14.2@@alipay/umi/bin/umi.js&quot; &quot;$@&quot;</span><br><span class="line">  ret=$?</span><br><span class="line">fi</span><br><span class="line">exit $ret</span><br></pre></td></tr></table></figure>
+<h2 id="Dva-Model-Drive"><a href="#Dva-Model-Drive" class="headerlink" title="Dva Model Drive"></a>Dva Model Drive</h2><p>在umi中，dva是内置的数据流解决方案，为React提供状态管理。</p>
+<h3 id="React状态管理实践"><a href="#React状态管理实践" class="headerlink" title="React状态管理实践"></a>React状态管理实践</h3><p>为了更优雅地进行React的状态管理，有三个重要的问题需要解决：<br>1、分离数据层面与视图层；<br>2、进行数据共享。<br>3、处理数据交互的副作用，如异步请求等；</p>
+<p>Dva提出的解决方案是：<br>1、通过model的设计，实现数据独立于组件视图外的管理；<br>2、组件可以通过namespace的的引索，找到对应的model实现数据共享；<br>3、通过model中的Effects，实现处理异步请求等副作用，最终将外界操作与状态的纯函数管理联系起来。</p>
+<blockquote>
+<p>Dev-Redux model示例</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  namespace: <span class="string">'some_namespace'</span>,</span><br><span class="line">  state: &#123;&#125;,</span><br><span class="line">  effects: &#123; <span class="comment">// 定义 effects 成员</span></span><br><span class="line">    <span class="string">'someEffect'</span>: <span class="function"><span class="keyword">function</span>*(<span class="params"></span>) </span>&#123;&#125;,</span><br><span class="line">    <span class="string">'someOtherEffect'</span>: <span class="function"><span class="keyword">function</span>*(<span class="params"></span>) </span>&#123;&#125;,</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">  &#125;,</span><br><span class="line">  reducers: &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>Mobx</strong></p>
+<p>另一个主流的MVVM状态管理方案Mobx的思想与Dva-Redux相似。</p>
+<p>1、Mobx通过Store的概念管理React状态树，利用@observe与@observable注解进行组件与状态数据绑定；</p>
+<p>相对于dva是通过@connect将model data注入组件的props，mobx的state可以直接控制组件渲染。</p>
+<p>2、只要映入mobx的@observe js文件，并在组件中引入state作为数据驱动，就可以实现数据共享。</p>
+<p>redux每次Reducer后返回的是一个new state，而mobx的@computed是改变单个observable state，后者更加精确。</p>
+<p>3、mobx通过@computed方法作为获取数据状态的pure function，@action方法处理数据交互的副作用。</p>
+<blockquote>
+<p>Mobx Store示例</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MobxStore</span> </span>&#123;</span><br><span class="line">  @observable state = [];</span><br><span class="line"></span><br><span class="line">  @computed <span class="keyword">get</span> computedMethod() &#123;</span><br><span class="line">      <span class="comment">// ...</span></span><br><span class="line">  &#125;</span><br><span class="line">  @action actionMethod() &#123;</span><br><span class="line">      <span class="comment">// ...</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Dva-Redux-amp-Mobx的差异"><a href="#Dva-Redux-amp-Mobx的差异" class="headerlink" title="Dva-Redux&amp;Mobx的差异"></a>Dva-Redux&amp;Mobx的差异</h3><p>相对而言，redux的编写相对mobx更加严格，所以适合维护大型的项目，同时国内的发展也相对比较成熟；<br>mobx的修改与拓展更为快捷，相对redux的开发代码量也较少，但容易形成不规范的代码。</p>
+<h3 id="Dva的三个重要概念"><a href="#Dva的三个重要概念" class="headerlink" title="Dva的三个重要概念"></a>Dva的三个重要概念</h3><ul>
+<li><strong>Dispatch</strong>：通过namespace&amp;method name可以将操作分配，通过这一机制联结视图层操作与视图层state的改变。</li>
+<li><strong>Reducer</strong>：Reducer是实现数据层state变化与视图层操作、请求输入等方法关键方法，是一个纯函数，每次返回一个新的state。</li>
+<li><strong>Effects</strong>：在UI操作与state变化的直接关联之外，也有一些不直接的操作，如网络请求.</li>
+</ul>
+<p>此时的逻辑可能有:<strong>点击-&gt;响应-&gt;状态改变</strong>，而响应的结果可能是不可控的，为了不破坏Reducer的纯粹性，需要有Effects作为类似中间层，处理这些不直接请求，最后再通过Reducer，达到操作与数据变化关联的效果。</p>
+<h2 id="问卷平台搭建的实践"><a href="#问卷平台搭建的实践" class="headerlink" title="问卷平台搭建的实践"></a>问卷平台搭建的实践</h2><p>基于umi开发一个问卷管理系统，包括：</p>
+<ul>
+<li>三栏式Layout布局</li>
+<li>首页的用户基本信息列表与管理入口</li>
+<li>用户管理页面能推送问卷，并查看历史问卷的答复</li>
+<li>问卷管理与编辑功能（支持单选、多选、输入三种形式，转成JSONStringify的格式）</li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://umijs.org/zh/guide/" target="_blank" rel="noopener">umi Training</a><br><a href="https://reacttraining.com/react-router/web/guides/quick-start" target="_blank" rel="noopener">Redux Training</a><br><a href="https://github.com/mobxjs/mobx" target="_blank" rel="noopener">Mobx Introduction</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/07/20181007_git_basic/" rel="next" title="Git入门学习">
+                <i class="fa fa-chevron-left"></i> Git入门学习
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/10/17/20181017_programing_mode/" rel="prev" title="几种常见编程模式">
+                几种常见编程模式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Clayton Huang</p>
+              <p class="site-description motion-element" itemprop="description">Done is better than perfect.</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技术栈"><span class="nav-number">2.</span> <span class="nav-text">技术栈</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">3.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Why-umi"><span class="nav-number">4.</span> <span class="nav-text">Why umi?</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#What’s-umi？"><span class="nav-number">4.1.</span> <span class="nav-text">What’s umi？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#The-Advantages-of-umi"><span class="nav-number">4.2.</span> <span class="nav-text">The Advantages of umi ?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#I-Component"><span class="nav-number">4.3.</span> <span class="nav-text">I. Component</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#II-Router"><span class="nav-number">4.4.</span> <span class="nav-text">II. Router</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#III-Using-AntD"><span class="nav-number">4.5.</span> <span class="nav-text">III. Using AntD</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#VI-umi-dev-amp-build"><span class="nav-number">4.6.</span> <span class="nav-text">VI. umi dev&amp;build?</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dva-Model-Drive"><span class="nav-number">5.</span> <span class="nav-text">Dva Model Drive</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#React状态管理实践"><span class="nav-number">5.1.</span> <span class="nav-text">React状态管理实践</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dva-Redux-amp-Mobx的差异"><span class="nav-number">5.2.</span> <span class="nav-text">Dva-Redux&amp;Mobx的差异</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dva的三个重要概念"><span class="nav-number">5.3.</span> <span class="nav-text">Dva的三个重要概念</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问卷平台搭建的实践"><span class="nav-number">6.</span> <span class="nav-text">问卷平台搭建的实践</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-number">7.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Clayton Huang</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

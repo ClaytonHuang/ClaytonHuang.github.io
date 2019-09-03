@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言之前在用阿里云翼计划9.9元的学生服务器，然而随着步入研究生的苦逼生活后，发现居然连学生认证也失效了(:з」∠)，看网上的评论，说可能是因为之前申请过了，不过一段时间没有续费，所以没有资格了。 但是个人服务器还是要有的啊，不然怎么装逼学习呢？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="『腾讯云配置的心路历程』">
+<meta property="og:url" content="https://claytonhuang.github.io/2018/05/30/20180530_tencent_server_deploy/index.html">
+<meta property="og:site_name" content="Clayton的新天际">
+<meta property="og:description" content="前言之前在用阿里云翼计划9.9元的学生服务器，然而随着步入研究生的苦逼生活后，发现居然连学生认证也失效了(:з」∠)，看网上的评论，说可能是因为之前申请过了，不过一段时间没有续费，所以没有资格了。 但是个人服务器还是要有的啊，不然怎么装逼学习呢？">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://claytonhuang.github.io/img/tired.jpeg">
+<meta property="og:updated_time" content="2019-08-14T06:25:42.746Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="『腾讯云配置的心路历程』">
+<meta name="twitter:description" content="前言之前在用阿里云翼计划9.9元的学生服务器，然而随着步入研究生的苦逼生活后，发现居然连学生认证也失效了(:з」∠)，看网上的评论，说可能是因为之前申请过了，不过一段时间没有续费，所以没有资格了。 但是个人服务器还是要有的啊，不然怎么装逼学习呢？">
+<meta name="twitter:image" content="https://claytonhuang.github.io/img/tired.jpeg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://claytonhuang.github.io/2018/05/30/20180530_tencent_server_deploy/">
+
+
+
+
+
+  <title>『腾讯云配置的心路历程』 | Clayton的新天际</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Clayton的新天际</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://claytonhuang.github.io/2018/05/30/20180530_tencent_server_deploy/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Clayton Huang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Clayton的新天际">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">『腾讯云配置的心路历程』</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-30T22:43:11+08:00">
+                2018-05-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/devOps/" itemprop="url" rel="index">
+                    <span itemprop="name">devOps</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>之前在用阿里云翼计划9.9元的学生服务器，然而随着步入研究生的苦逼生活后，发现居然连学生认证也失效了<em>(:з」∠)</em>，看网上的评论，说可能是因为之前申请过了，不过一段时间没有续费，所以没有资格了。</p>
+<p>但是个人服务器还是要有的啊，不然怎么<s>装逼</s>学习呢？</p>
+<a id="more"></a>
+<p>于是我把目光投向了腾讯的云+校园计划，听说还有一年八块钱的域名和免费的个人证书？？</p>
+<p>可以。</p>
+<p>个人域名+https一条龙，以后也可以强行搞微信小程序了。</p>
+<h2 id="获取服务器"><a href="#获取服务器" class="headerlink" title="获取服务器"></a>获取服务器</h2><p><a href="https://cloud.tencent.com/" target="_blank" rel="noopener">腾讯云官网</a><br><a href="https://cloud.tencent.com/act/campus" target="_blank" rel="noopener">腾讯云+校园计划</a><br>学生优惠[bug升级]，10元/月，另加8元可购买一个.cn域名一年使用权。</p>
+<ul>
+<li><p>查看服务器的系统版本</p>
+<pre><code>cat /proc/version
+</code></pre></li>
+<li><p>列出linux所有版本信息(Linux Standard Base)</p>
+<pre><code>lsb_release -a
+</code></pre></li>
+<li><p>查看cpu信息</p>
+<pre><code>cat /proc/cpuinfo |more
+</code></pre></li>
+<li><p>查看系统内存信息</p>
+<pre><code>cat /proc/cupinfo |more
+</code></pre></li>
+<li><p>查看服务器的磁盘信息</p>
+<pre><code>fdisk -l
+cat /proc/partitions
+</code></pre></li>
+</ul>
+<p><strong>PS:</strong> /proc/是一个伪文件系统，存在于内存中，不占用外存空间，可以在运行时访问内核内部数据结构、改变内核设置。<br>👉<a href="https://blog.csdn.net/zdwzzu2006/article/details/7747977" target="_blank" rel="noopener">参考</a></p>
+<h3 id="ssh登录配置"><a href="#ssh登录配置" class="headerlink" title="ssh登录配置"></a>ssh登录配置</h3><h4 id="创建系统账号并修改密码"><a href="#创建系统账号并修改密码" class="headerlink" title="创建系统账号并修改密码"></a>创建系统账号并修改密码</h4><p>腾讯云默认登录账户<code>ubuntu</code>，密码在控制台可修改，同时可以创建其他账户  </p>
+<p><strong>ssh 登录</strong>   </p>
+<blockquote>
+<p>ssh ubuntu@your_server_ip</p>
+</blockquote>
+<h4 id="不想每次ssh都输入密码？"><a href="#不想每次ssh都输入密码？" class="headerlink" title="不想每次ssh都输入密码？"></a>不想每次ssh都输入密码？</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh user@host &apos;mkdir -p .ssh &amp;&amp; cat &gt;&gt; .ssh/authorized_keys&apos; &lt; ~/.ssh/id_rsa.pub</span><br></pre></td></tr></table></figure>
+<p>其中，ssh user@host表示登录远程服务器；</p>
+<p>单引号中的<code>mkdir -p .ssh &amp;&amp; cat &gt;&gt; .ssh/authorized_keys</code>表示登录的远程服务器用户主目录下，如果不存在就创建一个.ssh文件夹；然后将 &lt; 后的内容追加到authorized_keys文件下</p>
+<p>~/.ssh/id_rsa.pub就是本地机器的公钥</p>
+<blockquote>
+<p>这样便将本地主机的公钥存入了远程服务器，之后便不用密码登录，远程服务器会用随机密码和本地交互，以判断本地公钥是否正确，即是否可以登录。</p>
+</blockquote>
+<h3 id="域名解析"><a href="#域名解析" class="headerlink" title="域名解析"></a>域名解析</h3><p>在header中选择域名管理，域名实名验证（一般3-5天）后，即可进行DNS解析，登录更方便，不用每次输入ip地址啦。</p>
+<h2 id="配置https"><a href="#配置https" class="headerlink" title="配置https"></a>配置https</h2><h3 id="获取ssl证书"><a href="#获取ssl证书" class="headerlink" title="获取ssl证书"></a>获取ssl证书</h3><p><a href="https://cloud.tencent.com/product/ssl" target="_blank" rel="noopener">腾讯这里有免费的个人免费版ssl证书</a><br>可以，审核只用了五分钟<em>(:з」∠)</em></p>
+<h3 id="部署ssl文件到服务器"><a href="#部署ssl文件到服务器" class="headerlink" title="部署ssl文件到服务器"></a>部署ssl文件到服务器</h3><p><a href="https://cloud.tencent.com/document/product/400/4143" target="_blank" rel="noopener">腾讯云官方指引</a></p>
+<h4 id="采用Apache-2-x部署证书"><a href="#采用Apache-2-x部署证书" class="headerlink" title="采用Apache 2.x部署证书"></a>采用Apache 2.x部署证书</h4><p>不要问为什么，nginx用多了，换个口味。</p>
+<div align="center"><br><img src="/img/tired.jpeg"><br></div>
+
+<h5 id="操作步骤"><a href="#操作步骤" class="headerlink" title="操作步骤"></a>操作步骤</h5><ol>
+<li><p>安装apache2</p>
+<pre><code>sudo apt-get install apache2
+</code></pre><p> 启动服务</p>
+<pre><code>sudo  /etc/init.d/apache2 [ start | stop | restart | status ]
+</code></pre></li>
+<li><p>安装Openssl模块</p>
+<pre><code>opensll
+</code></pre></li>
+<li><p>加载Apache的SSL模块</p>
+<pre><code>sudo a2enmod ssl
+</code></pre><p> 随后会在/etc/apache2/sites-available下生成default-ssl.conf文件</p>
+<ul>
+<li>修改VirtualHost 的domain标签</li>
+<li>添加ServerName <a href="http://www.domain.cn" target="_blank" rel="noopener">www.domain.cn</a></li>
+<li>修改 SSLCertificateFile/KeyFile/ChainFile</li>
+</ul>
+</li>
+</ol>
+<p>4. 将default-ssl.conf软链接到/etc/apache2/sites-enabled</p>
+<pre><code>sudo ln -s /etc/apache2/sites-available/default-ssl.conf /etc/apache2/sites-enabled/001-ssl.conf
+</code></pre><p>重新加载Apache配置文件</p>
+<pre><code>sudo /etc/init.d/apache2 force-reload
+</code></pre><p>重启Apache服务</p>
+<pre><code>sudo /etc/init.d/apache2 restart
+</code></pre><ol start="5">
+<li>TODO: 添加重定向和网站根目录的RewriteRule </li>
+</ol>
+<h5 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h5><p><a href="https://www.cnblogs.com/starof/p/4278370.html" target="_blank" rel="noopener">starof的ubuntu apache2服务器配置</a><br><a href="https://blog.csdn.net/gatieme/article/details/53025505" target="_blank" rel="noopener">AderStep的ubuntu下apache配置</a></p>
+<p><a href="https://blog.csdn.net/mgsky1/article/details/53844332" target="_blank" rel="noopener">mgsky1的基于ubuntuapache2.4安装ssl证书全套教程</a></p>
+<h2 id="Q-amp-A"><a href="#Q-amp-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</h2><h3 id="ssh-root-Permission-denied"><a href="#ssh-root-Permission-denied" class="headerlink" title="ssh root Permission denied?"></a>ssh root Permission denied?</h3><p>在ssh root@host时，密码输入正确，但是仍然无法登录远程服务器，提示Permission denied? </p>
+<p>A: 修改 /etc/ssh/sshd_config并重启服务<br><a href="http://www.cnblogs.com/xishuai/p/7458191.html" target="_blank" rel="noopener"><strong>参考链接</strong></a></p>
+<h3 id="ssl证书只要配置在443端口"><a href="#ssl证书只要配置在443端口" class="headerlink" title="ssl证书只要配置在443端口?"></a>ssl证书只要配置在443端口?</h3><p>ssl 默认端口443，而在其他端口要带端口号，不方便。</p>
+<h3 id="如何实现端口映射或者解析行为？"><a href="#如何实现端口映射或者解析行为？" class="headerlink" title="如何实现端口映射或者解析行为？"></a>如何实现端口映射或者解析行为？</h3><p><a href="https://segmentfault.com/q/1010000003491873" target="_blank" rel="noopener">反向代理了解一下</a><br>客户端代理是正向代理<br>服务端代理是反向代理</p>
+<p><strong>科普小课堂</strong><br>VPN(Virtual Private Network)称为虚拟专用网络，其实质是利用加密技术在公网上封装出一个数据通讯隧道，用客户端服务器做代理，在无法或不便于直接连接的两个机器间建立数据通道。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/29/20180529_webhooks/" rel="next" title="GitLab WebHooks 和 Git SubModule的简单应用">
+                <i class="fa fa-chevron-left"></i> GitLab WebHooks 和 Git SubModule的简单应用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/31/20180531_migrate-code/" rel="prev" title="迷一样的代码搬家工作">
+                迷一样的代码搬家工作 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Clayton Huang</p>
+              <p class="site-description motion-element" itemprop="description">Done is better than perfect.</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取服务器"><span class="nav-number">2.</span> <span class="nav-text">获取服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ssh登录配置"><span class="nav-number">2.1.</span> <span class="nav-text">ssh登录配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建系统账号并修改密码"><span class="nav-number">2.1.1.</span> <span class="nav-text">创建系统账号并修改密码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#不想每次ssh都输入密码？"><span class="nav-number">2.1.2.</span> <span class="nav-text">不想每次ssh都输入密码？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#域名解析"><span class="nav-number">2.2.</span> <span class="nav-text">域名解析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置https"><span class="nav-number">3.</span> <span class="nav-text">配置https</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#获取ssl证书"><span class="nav-number">3.1.</span> <span class="nav-text">获取ssl证书</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#部署ssl文件到服务器"><span class="nav-number">3.2.</span> <span class="nav-text">部署ssl文件到服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#采用Apache-2-x部署证书"><span class="nav-number">3.2.1.</span> <span class="nav-text">采用Apache 2.x部署证书</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#操作步骤"><span class="nav-number">3.2.1.1.</span> <span class="nav-text">操作步骤</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#参考"><span class="nav-number">3.2.1.2.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Q-amp-A"><span class="nav-number">4.</span> <span class="nav-text">Q&amp;A</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ssh-root-Permission-denied"><span class="nav-number">4.1.</span> <span class="nav-text">ssh root Permission denied?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ssl证书只要配置在443端口"><span class="nav-number">4.2.</span> <span class="nav-text">ssl证书只要配置在443端口?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何实现端口映射或者解析行为？"><span class="nav-number">4.3.</span> <span class="nav-text">如何实现端口映射或者解析行为？</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Clayton Huang</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
